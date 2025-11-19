@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>App de Denúncias - Vagas Prioritárias</title>
+  <style>
+    :root {
+      --bg: #f4f7fb;
+      --card: #ffffff;
+      --accent: #1266cc;
+      --muted: #546a7b;
+      --sidebar: #1a4f94;
+      --sidebar-hover: #1558b0;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Inter, Segoe UI, Roboto, Arial, sans-serif;
+      background: linear-gradient(180deg, #f7fbff, #eef4fb);
+      color: #102a43;
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* === SIDEBAR === */
+    .sidebar {
+      width: 220px;
+      background: var(--sidebar);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      padding-top: 20px;
+    }
+    .sidebar h2 {
+      text-align: center;
+      font-size: 1.1rem;
+      margin-bottom: 15px;
+      border-bottom: 1px solid rgba(255,255,255,0.2);
+      padding-bottom: 10px;
+    }
+    .tab-button {
+      background: none;
+      border: none;
+      color: #fff;
+      padding: 14px 18px;
+      text-align: left;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .tab-button:hover, .tab-button.active {
+      background: var(--sidebar-hover);
+    }
+
+    /* === CONTEÚDO PRINCIPAL === */
+    .content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: auto;
+      position: relative;
+    }
+
+    header {
+      background: var(--accent);
+      color: #fff;
+      padding: 16px 22px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+    }
+    header h1 {
+      font-size: 1.3rem;
+    }
+
+    /* === ÍCONE DO USUÁRIO === */
+    .user-icon {
+      font-size: 26px;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .user-icon:hover {
+      transform: scale(1.1);
+    }
+
+    /* === POP-UP DO USUÁRIO === */
+    .user-popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: var(--card);
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      width: 300px;
+      padding: 20px;
+      z-index: 200;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translate(-50%, -45%); }
+      to { opacity: 1; transform: translate(-50%, -50%); }
+    }
+
+    .user-popup h3 {
+      text-align: center;
+      color: var(--accent);
+      margin-bottom: 15px;
+    }
+
+    .user-popup p {
+      margin: 8px 0;
+      font-size: 0.95rem;
+      color: var(--muted);
+    }
+
+    .user-popup strong {
+      color: var(--accent);
+    }
+
+    .close-btn {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 8px;
+      display: block;
+      margin: 15px auto 0;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .close-btn:hover {
+      background: #0f5bb5;
+    }
+
+    /* === CONTEÚDOS === */
+    .tab-content {
+      padding: 20px;
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 18px;
+      box-shadow: 0 6px 18px rgba(16,42,67,0.06);
+      margin-bottom: 20px;
+    }
+
+    label { display: block; font-weight: 600; margin-bottom: 6px; }
+    input[type=text], input[type=email], input[type=tel],
+    input[type=datetime-local], textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #d7e1ee;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      margin-bottom: 10px;
+    }
+    textarea { min-height: 100px; resize: vertical; }
+
+    .btn {
+      display: inline-block;
+      padding: 10px 14px;
+      border-radius: 8px;
+      border: 0;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .btn.secondary {
+      background: #e9eef8;
+      color: var(--accent);
+    }
+
+    footer {
+      text-align: center;
+      color: var(--muted);
+      padding: 10px;
+      font-size: 0.8rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- MENU LATERAL -->
+  <nav class="sidebar">
+    <h2>🚗 Menu</h2>
+    <button class="tab-button active" onclick="openTab('denuncia')">📝 Denúncia</button>
+    <button class="tab-button" onclick="openTab('orientacoes')">📘 Orientações</button>
+    <button class="tab-button" onclick="openTab('suporte')">📞 Suporte</button>
+  </nav>
+
+  <!-- CONTEÚDO PRINCIPAL -->
+  <div class="content">
+    <header>
+      <h1>Denúncia de Uso Indevido de Vagas Prioritárias</h1>
+      <div class="user-icon" onclick="toggleUserPopup()">🧑‍💼</div>
+    </header>
+
+    <!-- POP-UP DO USUÁRIO -->
+    <div id="userPopup" class="user-popup">
+      <h3>Informações do Usuário</h3>
+      <p><strong>Nome:</strong> Matheus Húngaro</p>
+      <p><strong>E-mail:</strong> matheus@email.com</p>
+      <p><strong>Telefone:</strong> (65) 99999-9999</p>
+      <p><strong>Placa do carro:</strong> XYZ-1234</p>
+      <button class="close-btn" onclick="toggleUserPopup()">Fechar</button>
+    </div>
+
+    <!-- CONTEÚDOS -->
+    <div class="tab-content">
+      <!-- Aba Denúncia -->
+      <section id="denuncia" class="tab card">
+        <h2>Ficha de Denúncia</h2>
+        <form id="denunciaForm" onsubmit="handleSubmit(event)">
+          <label for="nome">Nome</label>
+          <input type="text" id="nome" placeholder="Seu nome completo">
+
+          <label for="telefone">Telefone</label>
+          <input type="tel" id="telefone" placeholder="(00) 90000-0000">
+
+          <label for="email">E-mail</label>
+          <input type="email" id="email" placeholder="seu@email.com">
+
+          <label><input type="checkbox" id="anonimo"> Denúncia anônima</label>
+
+          <label for="placa">Placa do veículo</label>
+          <input type="text" id="placa" placeholder="AAA0A00 / AAA0000">
+
+          <label for="local">Local</label>
+          <input type="text" id="local" placeholder="Rua, número, estabelecimento, bairro">
+
+          <label for="datahora">Data e horário</label>
+          <input type="datetime-local" id="datahora">
+
+          <label for="descricao">Descrição</label>
+          <textarea id="descricao" placeholder="Descreva o que aconteceu"></textarea>
+
+          <div style="margin-top:10px;">
+            <button class="btn" type="submit">Enviar Denúncia</button>
+            <button class="btn secondary" type="button" onclick="resetForm()">Limpar</button>
+          </div>
+        </form>
+      </section>
+
+      <!-- Aba Orientações -->
+      <section id="orientacoes" class="tab card" style="display:none;">
+        <h2>Como proceder na denúncia</h2>
+        <p class="muted">As vagas destinadas a PCD, idosos e gestantes são protegidas por lei. Quem as utiliza indevidamente pode sofrer penalidades.</p>
+        <h3>O que registrar:</h3>
+        <ul>
+          <li>Foto da placa do veículo e da vaga sinalizada;</li>
+          <li>Data, hora e endereço exato;</li>
+          <li>Descrição breve do ocorrido.</li>
+        </ul>
+        <h3>Leis relacionadas:</h3>
+        <ul>
+          <li><strong>Lei nº 10.098/2000</strong> — Normas gerais de acessibilidade.</li>
+          <li><strong>Lei nº 13.146/2015</strong> — Estatuto da Pessoa com Deficiência.</li>
+          <li><strong>CTB - Art. 181, XX</strong> — Estacionar em vaga reservada sem credencial é infração gravíssima.</li>
+        </ul>
+        <p class="muted">⚠️ Mantenha sempre a segurança. Não confronte motoristas. Apenas registre.</p>
+      </section>
+
+      <!-- Aba Suporte -->
+      <section id="suporte" class="tab card" style="display:none;">
+        <h2>Contatos Úteis</h2>
+        <ul>
+          <li><strong>Polícia Militar:</strong> 190</li>
+          <li><strong>Detran-MT:</strong> <a href="https://www.detran.mt.gov.br/" target="_blank">www.detran.mt.gov.br</a><br>
+              Telefone: (65) 3615-4800<br>
+              WhatsApp: (65) 9 9933-9318
+          </li>
+          <li><strong>Prefeitura de Cuiabá:</strong> <a href="https://www.cuiaba.mt.gov.br/" target="_blank">www.cuiaba.mt.gov.br</a><br>
+              Contato 1: (65) 3324-5611<br>
+              Contato 2: (65) 3324-5613
+          </li>
+          <li><strong>Procon-MT:</strong> <a href="https://www.procon.mt.gov.br/" target="_blank">www.procon.mt.gov.br</a><br>
+              Telefone: (65) 3613-2100
+          </li>
+          <li><strong>Ministério Público-MT:</strong> <a href="https://www.mpmt.mp.br/" target="_blank">www.mpmt.mp.br</a><br>
+              Contato 1: (65) 3613-5100<br>
+              Contato 2: (65) 3611-0600
+          </li>
+        </ul>
+      </section>
+    </div>
+
+    <footer>
+      © 2025 Aplicativo de Denúncias Cidadãs — Modelo Educacional.
+    </footer>
+  </div>
+
+  <script>
+    function openTab(tabId) {
+      document.querySelectorAll('.tab').forEach(tab => tab.style.display = 'none');
+      document.getElementById(tabId).style.display = 'block';
+      document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+    }
+
+    function resetForm() {
+      document.getElementById('denunciaForm').reset();
+    }
+
+    function handleSubmit(e) {
+      e.preventDefault();
+      alert('Denúncia registrada (modo demonstração).');
+      resetForm();
+    }
+
+    function toggleUserPopup() {
+      const popup = document.getElementById('userPopup');
+      popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
+    }
+
+    // Fecha pop-up ao clicar fora
+    window.addEventListener('click', function(e) {
+      const popup = document.getElementById('userPopup');
+      if (popup.style.display === 'block' && !popup.contains(e.target) && !e.target.classList.contains('user-icon')) {
+        popup.style.display = 'none';
+      }
+    });
+  </script>
+</body>
+</html>
