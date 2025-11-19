@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Denúncia: Uso Indevido de Vagas Prioritárias (PCD/Idoso)</title>
+  <style>
+    :root{--bg:#f4f7fb;--card:#ffffff;--accent:#1266cc;--muted:#546a7b}
+    *{box-sizing:border-box}
+    body{font-family:Inter,Segoe UI,Roboto,Arial,sans-serif;margin:0;background:linear-gradient(180deg,#f7fbff, #eef4fb);color:#102a43}
+    header{background:var(--accent);color:#fff;padding:28px 18px}
+    .container{max-width:960px;margin:20px auto;padding:0 18px}
+    h1{margin:0;font-size:1.6rem}
+    p.lead{margin:10px 0 0;color:#e6f0ff}
+    main{display:grid;grid-template-columns:1fr 420px;gap:20px;margin-top:18px}
+    @media(max-width:980px){main{grid-template-columns:1fr}}
+    .card{background:var(--card);padding:18px;border-radius:12px;box-shadow:0 6px 18px rgba(16,42,67,0.06)}
+    .info small{color:var(--muted)}
+    .form-group{margin-bottom:12px}
+    label{display:block;font-weight:600;margin-bottom:6px}
+    input[type=text],input[type=email],input[type=tel],input[type=datetime-local],textarea,select{width:100%;padding:10px;border:1px solid #d7e1ee;border-radius:8px;font-size:0.95rem}
+    textarea{min-height:100px;resize:vertical}
+    .row{display:flex;gap:12px}
+    .row .col{flex:1}
+    .btn{display:inline-block;padding:10px 14px;border-radius:8px;border:0;background:var(--accent);color:#fff;font-weight:700;cursor:pointer}
+    .btn.secondary{background:#e9eef8;color:var(--accent);font-weight:700}
+    .muted{color:var(--muted);font-size:0.95rem}
+    .preview{margin-top:8px;max-height:200px;object-fit:contain;border-radius:8px}
+    footer{margin-top:20px;padding:18px;text-align:center;color:#4a5966;font-size:0.9rem}
+    .help-list{list-style:disc;padding-left:18px}
+    .orgs{display:flex;flex-direction:column;gap:6px;text-align:left}
+    .meta{font-size:0.85rem;color:var(--muted)}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>Denúncia: Uso Indevido de Vagas Prioritárias (PCD / Idoso)</h1>
+      <p class="lead">Ferramenta para registrar e encaminhar ocorrências de veículos ocupando indevidamente vagas reservadas.</p>
+    </div>
+  </header>
+
+  <div class="container">
+    <main>
+      <section class="card info">
+        <h2>Orientações rápidas</h2>
+        <p class="muted">Vagas destinadas a Pessoas com Deficiência (PCD), idosos, gestantes e outras categorias têm prioridade legal. Quem usar essas vagas sem credencial pode ser autuado, multado e ter o veículo removido. Use esta ficha para registrar evidências (foto da placa, horário e local exato).</p>
+
+        <h3>O que recolher como prova</h3>
+        <ul class="help-list">
+          <li>Foto nítida da placa do veículo (em boa resolução).</li>
+          <li>Foto do entorno mostrando a sinalização e pintura da vaga.</li>
+          <li>Data e horário exatos — preferencialmente com foto do celular que traga metadados.</li>
+          <li>Local completo (endereço, número, cidade). Se possível, capturar coordenadas via GPS.</li>
+        </ul>
+
+        <h3>Direitos e penalidades (resumo)</h3>
+        <p class="muted">O poder público é obrigado a reservar vagas acessíveis e a aplicação da legislação prevê multa e pontos na CNH quando a vaga é usada indevidamente. Consulte órgãos locais para confirmação da penalidade aplicável no seu município.</p>
+
+        <h3>Como agir no momento</h3>
+        <ol class="help-list">
+          <li>Mantenha distância e registre as imagens com segurança — não confronte o motorista.</li>
+          <li>Preencha a ficha abaixo com informações e anexe as imagens.</li>
+          <li>Envie a denúncia para o órgão de trânsito local ou administração do estabelecimento.</li>
+        </ol>
+
+        <h3>Privacidade</h3>
+        <p class="muted">Ao enviar a denúncia você autoriza o encaminhamento dos dados às autoridades competentes. Se desejar anonimato, marque a opção "Denúncia anônima" — saiba que informações de contato facilitam o contato para complementação de prova.</p>
+
+      </section>
+
+      <aside class="card">
+        <h2>Ficha de Denúncia</h2>
+        <form id="denunciaForm" onsubmit="handleSubmit(event)" enctype="multipart/form-data">
+
+          <div class="form-group row">
+            <div class="col">
+              <label for="nome">Nome</label>
+              <input type="text" id="nome" name="nome" placeholder="Seu nome completo">
+            </div>
+            <div class="col">
+              <label for="telefone">Telefone</label>
+              <input type="tel" id="telefone" name="telefone" placeholder="(00) 90000-0000">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="email">E-mail</label>
+            <input type="email" id="email" name="email" placeholder="seu@email.com">
+          </div>
+
+          <div class="form-group">
+            <label for="anonimo"><input type="checkbox" id="anonimo" name="anonimo"> Denúncia anônima (não informar contato)</label>
+          </div>
+
+          <div class="form-group">
+            <label for="placa">Placa do veículo (se visível)</label>
+            <input type="text" id="placa" name="placa" placeholder="AAA0A00 / AAA0000" pattern="[A-Za-z0-9-\s]{1,10}">
+          </div>
+
+          <div class="form-group">
+            <label for="local">Local (endereço / referência)</label>
+            <input type="text" id="local" name="local" placeholder="Rua, número, estabelecimento, bairro">
+          </div>
+
+          <div class="form-group row">
+            <div class="col">
+              <label for="datahora">Data e horário</label>
+              <input type="datetime-local" id="datahora" name="datahora">
+            </div>
+            <div class="col">
+              <label for="coordenadas">Coordenadas (opcional)</label>
+              <input type="text" id="coordenadas" name="coordenadas" placeholder="Latitude, Longitude">
+              <button type="button" class="btn secondary" style="margin-top:8px;" onclick="getLocation()">Preencher com GPS</button>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="imagem">Anexar imagem (foto da placa / vaga)</label>
+            <input type="file" id="imagem" name="imagem" accept="image/*" onchange="previewImage(event)">
+            <img id="imgPreview" class="preview" alt="Preview" style="display:none">
+          </div>
+
+          <div class="form-group">
+            <label for="descricao">Descrição / Observações</label>
+            <textarea id="descricao" name="descricao" placeholder="Descreva o que aconteceu e qualquer detalhe relevante"></textarea>
+          </div>
+
+          <div class="form-group" style="display:flex;gap:8px;align-items:center">
+            <button class="btn" type="submit">Enviar denúncia</button>
+            <button type="button" class="btn secondary" onclick="resetForm()">Limpar</button>
+          </div>
+
+          <p class="meta">Obs.: Este formulário é um modelo. Para encaminhar oficialmente, os dados podem precisar ser enviados por meio do sistema do órgão de trânsito local, e-mail institucional ou aplicativo de fiscalização municipal.</p>
+        </form>
+      </aside>
+    </main>
+
+    <section class="card" style="margin-top:18px">
+      <h2>Informações legais (resumo)</h2>
+      <p class="muted">As normas brasileiras garantem vagas reservadas e disciplinam a fiscalização e penalidades em caso de uso indevido. A Lei de Inclusão e o Código de Trânsito tratam do direito a vagas e credenciais. Em geral, a infração pode resultar em multa, pontos na CNH e remoção do veículo.</p>
+
+      <h3>Boas práticas para estabelecimentos</h3>
+      <ul class="help-list">
+        <li>Manter sinalização visível e pintura adequada.</li>
+        <li>Exigir credencial visível para uso da vaga.</li>
+        <li>Comunicar à autoridade de trânsito local em caso de ocupação indevida.</li>
+      </ul>
+    </section>
+
+    <footer class="card" style="margin-top:18px">
+      <h3>Órgãos e contatos úteis</h3>
+      <div class="orgs">
+        <div><strong>DETRAN (estado) —</strong> Procure o site e o telefone do Detran do seu estado para denúncia e orientação.</div>
+        <div><strong>Prefeitura / Fiscalização de Trânsito municipal —</strong> Central de atendimento à fiscalização local (guincho, remoção).</div>
+        <div><strong>Procon (quando houver prática abusiva em estabelecimento privado) —</strong> Reclamações sobre atendimento e acessibilidade.</div>
+        <div><strong> Ministério Público / Defensoria Pública —</strong> Para casos de repetidas violações ou omissão do poder público.</div>
+      </div>
+      <p class="meta" style="margin-top:10px">Esta página é um modelo informativo — não substitui orientação jurídica ou os canais oficiais. Mantenha a prova (fotos) segura e não confronte o ocupante do veículo. Direitos reservados.</p>
+    </footer>
+  </div>
+
+  <script>
+    function previewImage(e){
+      const img = document.getElementById('imgPreview');
+      const file = e.target.files && e.target.files[0];
+      if(!file){ img.style.display='none'; img.src=''; return }
+      const url = URL.createObjectURL(file);
+      img.src = url; img.style.display = 'block';
+    }
+
+    function getLocation(){
+      const coord = document.getElementById('coordenadas');
+      if(!navigator.geolocation){ alert('Geolocalização não suportada neste navegador.'); return }
+      navigator.geolocation.getCurrentPosition(pos => {
+        coord.value = pos.coords.latitude.toFixed(6) + ', ' + pos.coords.longitude.toFixed(6);
+      }, err => { alert('Não foi possível obter localização: ' + err.message) })
+    }
+
+    function resetForm(){
+      document.getElementById('denunciaForm').reset();
+      document.getElementById('imgPreview').style.display='none';
+    }
+
+    function handleSubmit(e){
+      e.preventDefault();
+      // coleta dados do formulário
+      const form = document.getElementById('denunciaForm');
+      const data = new FormData(form);
+      // validação mínima
+      if(!data.get('imagem') && !data.get('placa')){
+        if(!confirm('Você não anexou imagem nem informou placa — deseja continuar?')) return;
+      }
+      // Exemplo: aqui poderíamos enviar os dados para um endpoint via fetch
+      // fetch('/api/denuncia', {method:'POST', body:data})
+      alert('Denúncia preparada. Implemente um endpoint para envio real. (Este é um modelo.)');
+      // para demonstração, limpamos o formulário
+      resetForm();
+    }
+  </script>
+</body>
+</html>
