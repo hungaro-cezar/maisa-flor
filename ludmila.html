@@ -195,6 +195,7 @@
     <h2>🚗 Menu</h2>
     <button class="tab-button active" onclick="openTab('denuncia')">📝 Denúncia</button>
     <button class="tab-button" onclick="openTab('orientacoes')">📘 Orientações</button>
+    <button class="tab-button" onclick="openTab('sugestao')">💡 Sugestão</button>
     <button class="tab-button" onclick="openTab('suporte')">📞 Suporte</button>
   </nav>
 
@@ -208,8 +209,8 @@
     <!-- POP-UP DO USUÁRIO -->
     <div id="userPopup" class="user-popup">
       <h3>Informações do Usuário</h3>
-      <p><strong>Nome:</strong> Matheus Húngaro</p>
-      <p><strong>E-mail:</strong> matheus@email.com</p>
+      <p><strong>Nome:</strong> Maisa Flor</p>
+      <p><strong>E-mail:</strong> Maisa Flor</p>
       <p><strong>Telefone:</strong> (65) 99999-9999</p>
       <p><strong>Placa do carro:</strong> XYZ-1234</p>
       <button class="close-btn" onclick="toggleUserPopup()">Fechar</button>
@@ -328,7 +329,20 @@
       if (popup.style.display === 'block' && !popup.contains(e.target) && !e.target.classList.contains('user-icon')) {
         popup.style.display = 'none';
       }
+
+      function enviarSugestao() {
+  const texto = document.getElementById('sugestaoTexto').value.trim();
+
+  if (texto === "") {
+    alert("Por favor, escreva uma sugestão antes de enviar.");
+    return;
+  }
+
+  alert("Sugestão enviada! (modo demonstração)");
+  document.getElementById('sugestaoTexto').value = "";
+}
     });
   </script>
 </body>
 </html>
+
