@@ -195,7 +195,6 @@
     <h2>🚗 Menu</h2>
     <button class="tab-button active" onclick="openTab('denuncia')">📝 Denúncia</button>
     <button class="tab-button" onclick="openTab('orientacoes')">📘 Orientações</button>
-    <button class="tab-button" onclick="openTab('sugestao')">💡 Sugestão</button>
     <button class="tab-button" onclick="openTab('suporte')">📞 Suporte</button>
   </nav>
 
@@ -330,20 +329,10 @@
         popup.style.display = 'none';
       }
 
-      function enviarSugestao() {
-  const texto = document.getElementById('sugestaoTexto').value.trim();
-
-  if (texto === "") {
-    alert("Por favor, escreva uma sugestão antes de enviar.");
-    return;
-  }
-
-  alert("Sugestão enviada! (modo demonstração)");
-  document.getElementById('sugestaoTexto').value = "";
-}
     });
   </script>
 </body>
 </html>
+
 
 
